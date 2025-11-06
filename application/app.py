@@ -66,11 +66,14 @@ def dashboard():
             action = request.form.get("action")
 
             if action == "assign_room":
+                
                 session_id = request.form.get("session_id")
                 room_id = request.form.get("room_id")
-                assignRoom(session_id, room_id, staff_id)
+                error = assignRoom(session_id, room_id, staff_id)
+                print(error)
 
             elif action == "add_training":
+                
                 member_id = request.form.get("member_id")
                 room_id = request.form.get("room_id")
                 trainer_id = request.form.get("trainer_id")
@@ -82,6 +85,8 @@ def dashboard():
                 print(error)
 
             elif action == "edit_training":
+                
+                session_id =[]
                 session_id = request.form.get("session_id")
                 member_id = request.form.get("member_id")
                 room_id = request.form.get("room_id")

@@ -84,10 +84,10 @@ BEGIN
         WHERE p.room_id = NEW.room_id
           AND p.session_date = NEW.session_date
           AND p.status = 'Booked'
-          AND (
-                (NEW.start_time BETWEEN p.start_time AND p.end_time)
-                OR
-                (NEW.end_time BETWEEN p.start_time AND p.end_time)
+          AND p.session_id != NEW.session_id
+          AND NOT (
+                NEW.end_time <= p.start_time
+                OR NEW.start_time >= p.end_time
               )
     ) THEN
         RAISE EXCEPTION 'Room is already booked for this time.';

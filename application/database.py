@@ -55,18 +55,28 @@ def login(user, email):
 #creating a new member (account creation)
 def createMember(name, gender, email, phone, fitness_goal):
     cursor, database_connection = connect()
-    cursor.execute("""INSERT INTO Members (name, gender, email, phone, fitness_goal) VALUES (%s, %s, %s, %s, %s)""",
-                   (name, gender, email, phone, fitness_goal))
-    database_connection.commit()
-    cleanUp(cursor, database_connection)
+    try:
+        cursor.execute("""INSERT INTO Members (name, gender, email, phone, fitness_goal) VALUES (%s, %s, %s, %s, %s)""",
+                    (name, gender, email, phone, fitness_goal))
+        database_connection.commit()
+        return None
+    except Exception as e:
+        return e
+    finally:
+        cleanUp(cursor, database_connection)
 
 #updating account details
 def updatePersonalDetails(name, gender, email, phone, fitness_goal):
     cursor, database_connection = connect()
-    cursor.execute("""UPDATE Members SET name = %s, gender = %s, email = %s, phone = %s, fitness_goal = %s WHERE email = %s""",
-                   (name, gender, email, phone, fitness_goal, email))
-    database_connection.commit()
-    cleanUp(cursor, database_connection)
+    try:
+        cursor.execute("""UPDATE Members SET name = %s, gender = %s, email = %s, phone = %s, fitness_goal = %s WHERE email = %s""",
+                    (name, gender, email, phone, fitness_goal, email))
+        database_connection.commit()
+        return None
+    except Exception as e:
+        return e
+    finally:
+        cleanUp(cursor, database_connection)
 
 def getGoal(member_id):
     cursor, database_connection = connect()
@@ -78,10 +88,15 @@ def getGoal(member_id):
 #creating a new healthmetric for a member
 def createNewHealthMetric(member_id, date_recorded, height, weight, heart_rate, body_fat_percentage):
     cursor, database_connection = connect()
-    cursor.execute("""INSERT INTO HealthMetrics (member_id, date_recorded, height, weight, heart_rate, body_fat_percentage) VALUES (%s, %s, %s, %s, %s, %s)""",
-                   (member_id, date_recorded, height, weight, heart_rate, body_fat_percentage))
-    database_connection.commit()
-    cleanUp(cursor, database_connection)
+    try:
+        cursor.execute("""INSERT INTO HealthMetrics (member_id, date_recorded, height, weight, heart_rate, body_fat_percentage) VALUES (%s, %s, %s, %s, %s, %s)""",
+                    (member_id, date_recorded, height, weight, heart_rate, body_fat_percentage))
+        database_connection.commit()
+        return None
+    except Exception as e:
+        return e
+    finally:
+        cleanUp(cursor, database_connection)
 
 #getting history of metrics
 def getMetrics(member_id):
@@ -127,7 +142,7 @@ def editTrainingSession(member_id, room_id, trainer_id, staff_id, session_date, 
 #get all training sessions
 def getAllTrainingSession():
     cursor, database_connection = connect()
-    cursor.execute("""SELECT * from PersonalTrainingSessions""")
+    cursor.execute("""SELECT * from PersonalTrainingSessions ORDER BY session_id""")
     
     assigned_sessions = cursor.fetchall()
     cleanUp(cursor, database_connection)
@@ -194,15 +209,22 @@ def viewLastMetric(member_id):
 #assign a room to a session
 def assignRoom(session_id, room_id, staff_id):
     cursor, database_connection = connect()
-    cursor.execute("""UPDATE PersonalTrainingSessions SET room_id = %s, staff_id = %s WHERE session_id = %s""", 
-                   (room_id, staff_id, session_id))
+    try:
+        cursor.execute("""UPDATE PersonalTrainingSessions SET room_id = %s, staff_id = %s WHERE session_id = %s""", 
+                    (room_id, staff_id, session_id))
 
-    database_connection.commit()
-    cleanUp(cursor, database_connection)
+        database_connection.commit()
+        return None
+    except Exception as e:
+        pg_error = str(e)
+
+        return pg_error 
+    finally:
+        cleanUp(cursor, database_connection)
 
 def getRooms():
     cursor, database_connection = connect()
-    cursor.execute("Select * from Rooms")
+    cursor.execute("Select * from Rooms ORDER BY room_id")
     members = cursor.fetchall()
 
     cleanUp(cursor, database_connection)
@@ -210,7 +232,7 @@ def getRooms():
 
 def getMembers():
     cursor, database_connection = connect()
-    cursor.execute("Select * from Members")
+    cursor.execute("Select * from Members ORDER BY member_id")
     members = cursor.fetchall()
 
     cleanUp(cursor, database_connection)
@@ -218,7 +240,7 @@ def getMembers():
 
 def getTrainers():
     cursor, database_connection = connect()
-    cursor.execute("Select * from Trainers")
+    cursor.execute("Select * from Trainers ORDER BY trainer_id")
     members = cursor.fetchall()
 
     cleanUp(cursor, database_connection)
