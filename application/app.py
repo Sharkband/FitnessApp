@@ -55,7 +55,7 @@ def dashboard():
             if search_query:
                 search_results = searchMember(search_query)
 
-    elif session["role"] == "staff":          
+    elif session["role"] == "staff": 
         staff_id = session["role_id"][0]
         training_sessions = getAllTrainingSession()
         rooms = getRooms()
@@ -71,6 +71,7 @@ def dashboard():
                 room_id = request.form.get("room_id")
                 error = assignRoom(session_id, room_id, staff_id)
                 print(error)
+                return redirect("/dashboard")
 
             elif action == "add_training":
                 
@@ -83,6 +84,8 @@ def dashboard():
                 status = request.form.get("status")
                 error = bookTrainingSession(member_id, room_id, trainer_id, staff_id, session_date, start_time, end_time, status)
                 print(error)
+                return redirect("/dashboard")
+
 
             elif action == "edit_training":
                 
@@ -97,6 +100,7 @@ def dashboard():
                 status = request.form.get("status")
                 error = editTrainingSession(member_id, room_id, trainer_id, staff_id, session_date, start_time, end_time, status, session_id)
                 print(error)
+                return redirect("/dashboard")
         
         
     

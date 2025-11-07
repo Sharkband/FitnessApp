@@ -456,7 +456,7 @@
 
     <h2>Assign Room</h2>
 
-    <form method="POST">
+    <form method="POST" action="/dashboard">
       <input type="hidden" name="action" value="assign_room">
       Session ID: <input name="session_id"><br><br>
       Room ID: <input name="room_id"><br><br>
@@ -494,7 +494,7 @@
 
     <h2>Add Training Session</h2>
 
-    <form method="POST">
+    <form method="POST" action="/dashboard">
       <input type="hidden" name="action" value="add_training">
       Member id: <input type="number" name="member_id"><br><br>
       Room id: <input type="number" name="room_id"><br><br>
@@ -508,7 +508,7 @@
 
     <h2>Edit Training Session</h2>
 
-    <form method="POST">
+    <form method="POST" action="/dashboard">
       <input type="hidden" name="action" value="edit_training">
       Session id: <input type="number" name="session_id"><br><br>
       Member id: <input type="number" name="member_id"><br><br>
