@@ -9,7 +9,7 @@ def connect():
         host="localhost",
         user="postgres",
         database= "Fitness",
-        password="###",
+        password="###",#change to password
     )
 
     #setting up connections
